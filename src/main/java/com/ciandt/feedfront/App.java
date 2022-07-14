@@ -1,6 +1,5 @@
 package com.ciandt.feedfront;
 
-import com.ciandt.feedfront.FileUtil.FileUtil;
 import com.ciandt.feedfront.employee.Employee;
 import com.ciandt.feedfront.excecoes.ArquivoException;
 import com.ciandt.feedfront.excecoes.ComprimentoInvalidoException;
@@ -28,25 +27,6 @@ public class App
         Employee novoEmployee5 = new Employee("Rafael","Lopes","rafaellopes@mail.com");
         Employee novoEmployee6 = new Employee("Thiago","Dutra","thiagodutra@mail.com");
 
-        /*
-        String caminho = "arquivo.txt";
-
-        List<Employee> enployes = new ArrayList<Employee>();
-        enployes.add(novoEmployee1);
-        enployes.add(novoEmployee2);
-        enployes.add(novoEmployee3);
-
-        boolean gravou = FileUtil.gravarObjeto(enployes, caminho);
-
-        List<Employee> obj = (List<Employee>) FileUtil.recuperarObjeto(caminho);
-
-        for (Employee employee : obj) {
-            System.out.println(employee);
-        }
-
-        System.out.println(obj);
-
-         */
 
         System.out.println("-------------------------------");
         try {
@@ -63,11 +43,12 @@ public class App
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         System.out.println("-------------------------------");
         System.out.println("Lista de Employees:");
         Employee.listarEmployees().forEach(employee -> System.out.println(employee.toString()));
-        System.out.println("-------------------------------");
 
+        System.out.println("-------------------------------");
         try {
             System.out.println("Busca com Employee com id: " + novoEmployee1.getId());
             System.out.println(Employee.buscarEmployee(novoEmployee1.getId()).toString());

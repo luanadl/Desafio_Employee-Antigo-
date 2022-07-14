@@ -5,12 +5,10 @@ import com.ciandt.feedfront.excecoes.ComprimentoInvalidoException;
 import com.ciandt.feedfront.excecoes.EmailInvalidoException;
 import com.ciandt.feedfront.excecoes.EmployeeNaoEncontradoException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import java.io.*;
+import java.util.stream.Collectors;
 
 public class Employee implements Serializable{
     private String id;
@@ -18,9 +16,8 @@ public class Employee implements Serializable{
     private String sobrenome;
     private String email;
 
-    /* String arquivoCriado = "arquivo.extensao"; TODO: alterar de acordo com a sua implementação */
-
-    String caminho = "arquivo.txt";
+    public Employee() {
+    }
 
     public Employee(String nome, String sobrenome, String email) throws ComprimentoInvalidoException {
         this.id = UUID.randomUUID().toString();
@@ -108,11 +105,34 @@ public class Employee implements Serializable{
 
     }
 
-    public static Employee buscarEmployee(String id) throws ArquivoException, EmployeeNaoEncontradoException {
+    public static Employee buscarEmployee(String id) throws IOException, EmployeeNaoEncontradoException, ClassNotFoundException, ComprimentoInvalidoException {
+
+        List<Employee> listOfEmployee = listarEmployees();
+
+        for (Employee employee : listOfEmployee) {
+            if (id.equals(employee.getId().toString())) {
+                return employee;
+            } else {
+                throw new EmployeeNaoEncontradoException("not found");
+            }
+        }
         return null;
+
     }
 
-    public static void apagarEmployee(String id) throws ArquivoException, EmployeeNaoEncontradoException {
+    public static void apagarEmployee(String id) throws IOException, EmployeeNaoEncontradoException, ClassNotFoundException {
+
+        List<Employee> listOfEmployee = listarEmployees();
+
+        for (Employee employee : listOfEmployee) {
+            if (id.equals(employee.getId().toString())) {
+                listOfEmployee.remove(employee);
+            } else {
+                throw new EmployeeNaoEncontradoException("not found");
+            }
+        }
+
+
     }
 
     public String getNome() {
@@ -140,10 +160,28 @@ public class Employee implements Serializable{
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) && Objects.equals(nome, employee.nome) && Objects.equals(sobrenome, employee.sobrenome) && Objects.equals(email, employee.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, sobrenome, email);
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
-                "nome='" + nome + '\'' +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
                 ", sobrenome='" + sobrenome + '\'' +
                 ", email='" + email + '\'' +
                 '}';
