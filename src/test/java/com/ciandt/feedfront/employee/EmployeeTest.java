@@ -8,6 +8,7 @@ import com.ciandt.feedfront.excecoes.EmployeeNaoEncontradoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class EmployeeTest {
     }
 
     @Test
-    public void salvarEmployeeTest() throws ComprimentoInvalidoException, EmailInvalidoException, ArquivoException, EmployeeNaoEncontradoException {
+    public void salvarEmployeeTest() throws Exception {
         employee2 = new Employee("João", "Silveira", "j.silveira@email.com");
 
         Employee.salvarEmployee(employee1);
@@ -40,7 +41,7 @@ public class EmployeeTest {
     }
 
     @Test
-    public void listarEmployees() throws ArquivoException {
+    public void listarEmployees() throws IOException, ClassNotFoundException {
         List<Employee> employees = Employee.listarEmployees();
 
         assertTrue(employees.isEmpty() == false);

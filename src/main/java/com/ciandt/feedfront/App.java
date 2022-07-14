@@ -1,10 +1,16 @@
 package com.ciandt.feedfront;
 
+import com.ciandt.feedfront.FileUtil.FileUtil;
 import com.ciandt.feedfront.employee.Employee;
 import com.ciandt.feedfront.excecoes.ArquivoException;
 import com.ciandt.feedfront.excecoes.ComprimentoInvalidoException;
 import com.ciandt.feedfront.excecoes.EmailInvalidoException;
 import com.ciandt.feedfront.excecoes.EmployeeNaoEncontradoException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Hello world!
@@ -12,7 +18,8 @@ import com.ciandt.feedfront.excecoes.EmployeeNaoEncontradoException;
  */
 public class App 
 {
-    public static void main( String[] args ) throws ComprimentoInvalidoException, EmailInvalidoException, ArquivoException, EmployeeNaoEncontradoException {
+    public static void main( String[] args ) throws ComprimentoInvalidoException, EmailInvalidoException, IOException, EmployeeNaoEncontradoException, ClassNotFoundException {
+
 
         Employee novoEmployee1 = new Employee("Joao","Santos","joaosantos@mail.com");
         Employee novoEmployee2 = new Employee("Maria","Duarte","mariaduarte@mail.com");
@@ -20,6 +27,26 @@ public class App
         Employee novoEmployee4 = new Employee("Daniel","Cerqueira","danielcerqueira@mail.com");
         Employee novoEmployee5 = new Employee("Rafael","Lopes","rafaellopes@mail.com");
         Employee novoEmployee6 = new Employee("Thiago","Dutra","thiagodutra@mail.com");
+
+        /*
+        String caminho = "arquivo.txt";
+
+        List<Employee> enployes = new ArrayList<Employee>();
+        enployes.add(novoEmployee1);
+        enployes.add(novoEmployee2);
+        enployes.add(novoEmployee3);
+
+        boolean gravou = FileUtil.gravarObjeto(enployes, caminho);
+
+        List<Employee> obj = (List<Employee>) FileUtil.recuperarObjeto(caminho);
+
+        for (Employee employee : obj) {
+            System.out.println(employee);
+        }
+
+        System.out.println(obj);
+
+         */
 
         System.out.println("-------------------------------");
         try {
@@ -29,14 +56,16 @@ public class App
             Employee.salvarEmployee(novoEmployee4);
             Employee.salvarEmployee(novoEmployee5);
             Employee.salvarEmployee(novoEmployee6);
+
             System.out.println("Criacao de Employee feito com sucesso!");
         } catch (EmailInvalidoException | ArquivoException ex) {
             System.out.println(ex.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         System.out.println("-------------------------------");
         System.out.println("Lista de Employees:");
         Employee.listarEmployees().forEach(employee -> System.out.println(employee.toString()));
-
         System.out.println("-------------------------------");
 
         try {
@@ -65,6 +94,8 @@ public class App
         } catch (EmployeeNaoEncontradoException ex) {
             System.out.println(ex.getMessage());
         }
+
+
 
     }
 }
