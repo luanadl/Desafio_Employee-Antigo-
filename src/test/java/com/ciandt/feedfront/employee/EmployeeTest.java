@@ -62,7 +62,7 @@ public class EmployeeTest {
     }
 
     @Test
-    public void atualizarEmployee() throws ComprimentoInvalidoException, EmployeeNaoEncontradoException, IOException, EmailInvalidoException, ClassNotFoundException {
+    public void atualizarEmployee() throws Exception {
         String sobrenome = "Roberto";
         employee1.setSobrenome(sobrenome);
 
@@ -78,7 +78,11 @@ public class EmployeeTest {
     @Test
     public void apagarEmployee() throws IOException, EmployeeNaoEncontradoException, ClassNotFoundException {
         String id = employee1.getId();
-        Employee.apagarEmployee(id);
+        try {
+            Employee.apagarEmployee(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         Exception employeeNaoEncontradoException =  assertThrows(EmployeeNaoEncontradoException.class, () -> {
             Employee.buscarEmployee(id);

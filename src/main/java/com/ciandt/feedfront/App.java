@@ -66,6 +66,8 @@ public class App
             System.out.println("Employee Atualizado: "+ atualizaEmployee.toString());
         } catch (EmailInvalidoException | ArquivoException ex) {
             System.out.println(ex.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         System.out.println("-------------------------------");
@@ -74,8 +76,9 @@ public class App
             System.out.println("Cadastro Deletado com sucesso!");
         } catch (EmployeeNaoEncontradoException ex) {
             System.out.println(ex.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
 
 
     }

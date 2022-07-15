@@ -10,7 +10,7 @@ import java.util.*;
 import java.io.*;
 import java.util.stream.Collectors;
 
-public class Employee implements Serializable{
+public class Employee implements Serializable, Iterator{
     private String id;
     private String nome;
     private String sobrenome;
@@ -38,11 +38,36 @@ public class Employee implements Serializable{
         return Collections.unmodifiableList(listOfEmployee);
     }
 
-    public static boolean salvarEmployee(Employee employee) throws Exception, EmailInvalidoException {
+    public String getNome() {
+        return null;
+    }
 
-        addNewEmployee(employee);
+    public void setNome(String nome) throws ComprimentoInvalidoException {
+    }
 
-        List<Employee> listOfEmployee = getList();
+    public String getSobrenome() {
+        return null;
+    }
+
+    public void setSobrenome(String sobrenome) throws ComprimentoInvalidoException {
+    }
+
+    public String getEmail() {
+        return null;
+    }
+
+    public void setEmail(String email) {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public static boolean saveListEmployee (List<Employee> list){
 
         String path = "file.txt";
 
@@ -56,11 +81,12 @@ public class Employee implements Serializable{
                 return false;
             }
         }
+
         try{
             FileOutputStream fileOutput = new FileOutputStream(file);
             ObjectOutputStream objOutput = new ObjectOutputStream(fileOutput);
 
-            objOutput.writeObject(listOfEmployee);
+            objOutput.writeObject(list);
 
             objOutput.flush();
             fileOutput.flush();
@@ -74,10 +100,46 @@ public class Employee implements Serializable{
             e.printStackTrace();
             return false;
         }
+
     }
 
-    public static Employee atualizarEmployee(Employee employee) throws ArquivoException, EmailInvalidoException {
+    public static boolean salvarEmployee(Employee employee) throws Exception, EmailInvalidoException {
+
+        addNewEmployee(employee);
+
+        return saveListEmployee(listOfEmployee);
+
+    }
+
+    public static Employee atualizarEmployee(Employee employee) throws Exception {
+
+        List<Employee> listOfEmployee = listarEmployees();
+
+        for (Employee e : listOfEmployee){
+            if(e.getId().equals(employee.getId())){
+                e.setNome(employee.getNome());
+                e.setSobrenome(employee.getSobrenome());
+                saveListEmployee(listOfEmployee);
+                return buscarEmployee(employee.getId());
+            }
+        }
         return null;
+
+        /*
+        List<Employee> listOfEmployee = listarEmployees();
+
+        ListIterator li = listOfEmployee.listIterator();
+
+        while(li.hasNext()){
+            Employee e = (Employee)li.next();
+            if(e.getId().equals(employee.getId().toString())){
+                li.remove();
+                saveListEmployee(listOfEmployee);
+            }
+        }
+
+         */
+
     }
 
     public static List<Employee> listarEmployees() throws IOException, ClassNotFoundException {
@@ -120,61 +182,31 @@ public class Employee implements Serializable{
 
     }
 
-    public static void apagarEmployee(String id) throws IOException, EmployeeNaoEncontradoException, ClassNotFoundException {
+    public static void apagarEmployee(String id) throws Exception {
 
         List<Employee> listOfEmployee = listarEmployees();
 
-        for (Employee employee : listOfEmployee) {
-            if (id.equals(employee.getId().toString())) {
-                listOfEmployee.remove(employee);
-            } else {
-                throw new EmployeeNaoEncontradoException("not found");
+        ListIterator li = listOfEmployee.listIterator();
+
+        while(li.hasNext()){
+            Employee e = (Employee)li.next();
+            if(id.equals(e.getId().toString())){
+                li.remove();
+                saveListEmployee(listOfEmployee);
             }
         }
-
-
     }
 
-    public String getNome() {
-        return null;
-    }
 
-    public void setNome(String nome) throws ComprimentoInvalidoException {
-    }
 
-    public String getSobrenome() {
-        return null;
-    }
-
-    public void setSobrenome(String sobrenome) throws ComprimentoInvalidoException {
-    }
-
-    public String getEmail() {
-        return null;
-    }
-
-    public void setEmail(String email) {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public boolean hasNext() {
+        return false;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) && Objects.equals(nome, employee.nome) && Objects.equals(sobrenome, employee.sobrenome) && Objects.equals(email, employee.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, sobrenome, email);
+    public Object next() {
+        return null;
     }
 
     @Override
@@ -186,4 +218,6 @@ public class Employee implements Serializable{
                 ", email='" + email + '\'' +
                 '}';
     }
+
+
 }
