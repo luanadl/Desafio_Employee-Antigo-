@@ -50,16 +50,24 @@ public class Employee implements Serializable, Iterator{
         return nome;
     }
 
-    public void setNome(String nome) {
+
+    public void setNome(String nome) throws ComprimentoInvalidoException {
         this.nome = nome;
+        if (nome.length() <= 2) {
+            throw new ComprimentoInvalidoException("Caution! name must have 3 or more characteres");
+        }
     }
 
     public String getSobrenome() {
         return sobrenome;
     }
 
-    public void setSobrenome(String sobrenome) {
+
+    public void setSobrenome(String sobrenome) throws ComprimentoInvalidoException {
         this.sobrenome = sobrenome;
+        if (sobrenome.length() <= 2) {
+            throw new ComprimentoInvalidoException("Caution! name must have 3 or more characteres");
+        }
     }
 
     public String getEmail() {
@@ -125,25 +133,6 @@ public class Employee implements Serializable, Iterator{
             }
         }
         return null;
-
-
-        /*
-        List<Employee> listOfEmployee = listarEmployees();
-
-        ListIterator li = listOfEmployee.listIterator();
-
-        while(li.hasNext()){
-            Employee e = (Employee)li.next();
-            if(e.getId().equals(employee.getId())){
-                li.set(new Employee(employee.getNome(),employee.getSobrenome(), employee.getEmail()));
-                saveListEmployee(listOfEmployee);
-                return e;
-            }else {
-                return null;
-            }
-        }
-        return null;
-         */
 
     }
 
