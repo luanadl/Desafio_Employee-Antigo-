@@ -38,33 +38,36 @@ public class Employee implements Serializable, Iterator{
         return Collections.unmodifiableList(listOfEmployee);
     }
 
-    public String getNome() {
-        return null;
-    }
-
-    public void setNome(String nome) throws ComprimentoInvalidoException {
-    }
-
-    public String getSobrenome() {
-        return null;
-    }
-
-    public void setSobrenome(String sobrenome) throws ComprimentoInvalidoException {
-    }
-
-    public String getEmail() {
-        return null;
-    }
-
-    public void setEmail(String email) {
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public static boolean saveListEmployee (List<Employee> list){
@@ -113,8 +116,6 @@ public class Employee implements Serializable, Iterator{
 
     public static Employee atualizarEmployee(Employee employee) throws Exception {
 
-        List<Employee> listOfEmployee = listarEmployees();
-
         for (Employee e : listOfEmployee){
             if(e.getId().equals(employee.getId())){
                 e.setNome(employee.getNome());
@@ -125,6 +126,7 @@ public class Employee implements Serializable, Iterator{
         }
         return null;
 
+
         /*
         List<Employee> listOfEmployee = listarEmployees();
 
@@ -132,12 +134,15 @@ public class Employee implements Serializable, Iterator{
 
         while(li.hasNext()){
             Employee e = (Employee)li.next();
-            if(e.getId().equals(employee.getId().toString())){
-                li.remove();
+            if(e.getId().equals(employee.getId())){
+                li.set(new Employee(employee.getNome(),employee.getSobrenome(), employee.getEmail()));
                 saveListEmployee(listOfEmployee);
+                return e;
+            }else {
+                return null;
             }
         }
-
+        return null;
          */
 
     }
